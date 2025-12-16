@@ -23,7 +23,7 @@
 
 		<div align="center">
 			<h1>Login</h1>
-
+ 
 			<div style="height: 15px; margin-bottom: 12px">
 				<H3 align="center">
 					<font color="green"> <%=ServletUtility.getSuccessMessage(request)%>
@@ -31,6 +31,9 @@
 				</H3>
 				<H3 align="center">
 					<font color="red"> <%=ServletUtility.getErrorMessage(request)%>
+					
+					
+					
 					</font>
 				</H3>
 			</div>
@@ -38,13 +41,13 @@
 			<table>
 				<tr>
 					<th>Login ID:</th>
-					<td><input type="text" name="login"
+					<td><input type="text" name="login" placeholder="Enter Email Id"
 						value="<%=DataUtility.getStringData(bean.getLogin())%>"></td>
 					<td style="position: fixed;"><font color="red"> <%=ServletUtility.getErrorMessage("login", request)%></font></td>
 				</tr>
 				<tr>
 					<th>Password:</th>
-					<td><input type="text" name="password"
+					<td><input type="text" name="password" placeholder="Enter password"
 						value="<%=DataUtility.getStringData(bean.getPassword())%>"></td>
 					<td style="position: fixed;"><font color="red"> <%=ServletUtility.getErrorMessage("password", request)%></font></td>
 				</tr>
@@ -66,5 +69,6 @@
 		</div>
 		
 	</form>
+	<%@ include file="Footer.jsp"%>
 </body>
 </html>

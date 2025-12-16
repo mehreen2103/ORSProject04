@@ -56,7 +56,10 @@
                         <label><b>Login Id:</b></label>
                         <input type="text" name="login" placeholder="Enter Email ID" value="<%=ServletUtility.getParameter("login", request)%>">&emsp;
 
-                        <label><b>Role : </b></label>
+<!--                         <label><b>Dob</b></label> -->
+<%--                         <input type="text" name="dob" id="udate"  placeholder="Enter your dob" value="<%= ServletUtility.getParameter("dob", request) %>">&emsp; --%>
+                        
+                         <label><b>Role : </b></label>
                         <%=HTMLUtility.getList("roleId", String.valueOf(bean.getRoleId()), roleList)%>&emsp;
 
                         <input type="submit" name="operation" value="<%=UserListCtl.OP_SEARCH%>">
@@ -70,7 +73,7 @@
             <table border="1" style="width: 100%; border: groove;">
                 <tr style="background-color: #e1e6f1e3;">
                     <th width="5%"><input type="checkbox" id="selectall" /></th>
-                    <th width="5%">S.No</th>
+                    <th width="5%">Sr.No</th>
                     <th width="13%">First Name</th>
                     <th width="13%">Last Name</th>
                     <th width="23%">Login Id</th>
@@ -93,7 +96,7 @@
 
                 <tr>
                     <td style="text-align: center;">
-                        <input type="checkbox" class="case" name="ids" value="<%=bean.getId()%>"
+                        <input type="checkbox" name="ids" value="<%=bean.getId()%>"0
                             <%= (user.getId() == bean.getId() || bean.getRoleId() == RoleBean.ADMIN) ? "disabled" : "" %>>
                     </td>
                     <td style="text-align: center;"><%=index++%></td>
@@ -149,5 +152,6 @@
             %>
         </form>
     </div>
+    <%@ include file="Footer.jsp"%>
 </body>
 </html>

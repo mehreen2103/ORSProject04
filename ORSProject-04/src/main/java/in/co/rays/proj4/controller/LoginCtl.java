@@ -1,7 +1,6 @@
-package in.co.rays.proj4.controller;
+ package in.co.rays.proj4.controller;
 
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -83,6 +82,7 @@ public class LoginCtl extends BaseCtl {
      */
     @Override
     protected BaseBean populateBean(HttpServletRequest request) {
+    	
         UserBean bean = new UserBean();
         bean.setId(DataUtility.getLong(request.getParameter("id")));
         bean.setLogin(DataUtility.getString(request.getParameter("login")));
@@ -106,6 +106,7 @@ public class LoginCtl extends BaseCtl {
             ServletUtility.forward(getView(), request, response);
             return;
         }
+        
         ServletUtility.forward(getView(), request, response);
     }
 
@@ -146,16 +147,19 @@ public class LoginCtl extends BaseCtl {
 
                     ServletUtility.redirect(ORSView.WELCOME_CTL, request, response);
                     return;
+                    
                 } else {
                     bean = (UserBean) populateBean(request);
-                    ServletUtility.setBean(bean, request);
+                       ServletUtility.setBean(bean, request);
                     ServletUtility.setErrorMessage("Invalid LoginId And Password", request);
                 }
+                
             } catch (ApplicationException e) {
                 e.printStackTrace();
                 ServletUtility.handleException(e, request, response);
                 return;
             }
+            
         } else if (OP_SIGN_UP.equalsIgnoreCase(op)) {
             ServletUtility.redirect(ORSView.USER_REGISTRATION_CTL, request, response);
             return;

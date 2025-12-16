@@ -22,6 +22,7 @@
 
 <body>
 
+     <img src="<%=ORSView.APP_CONTEXT%>/img/customLogo.jpg" align="right" width="100" height="40" border="0">
 <%
     UserBean user = (UserBean) session.getAttribute("user");
 %>
@@ -34,10 +35,6 @@
     </h3>
 
     <a href="<%=ORSView.MY_PROFILE_CTL%>"><b>My Profile</b></a> 
-    <b>|</b>
-    <a href="<%=ORSView.CHANGE_PASSWORD_CTL%>"><b>Change Password</b></a> 
-    <b>|</b>
-    <a href="<%=ORSView.FORGET_PASSWORD_CTL%>"><b>Forget Password</b></a> 
     <b>|</b>
     <a href="<%=ORSView.GET_MARKSHEET_CTL%>"><b>Get Marksheet</b></a> 
     <b>|</b>
@@ -65,8 +62,9 @@
     <b>|</b> 
     <a href="<%=ORSView.COURSE_CTL%>"><b>Add Course</b></a> 
     <b>|</b> 
-    <a href="<%=ORSView.COURSE_LIST_CTL%>"><b>Course List</b></a> 
+    <a href="<%=ORSView.COURSE_LIST_CTL%>"><b>Course List</b></a>
     <b>|</b> 
+    <br> 
     <a href="<%=ORSView.SUBJECT_CTL%>"><b>Add Subject</b></a> 
     <b>|</b> 
     <a href="<%=ORSView.SUBJECT_LIST_CTL%>"><b>Subject List</b></a> 
@@ -81,7 +79,9 @@
     <b>|</b> 
     <a href=<%=ORSView.JAVA_DOC%> target="blank"><b>Java Doc</b></a>
 	<b>|</b>
-    <a href="LoginCtl?operation=<%=LoginCtl.OP_LOG_OUT%>"><b>Logout</b></a>
+	 <a href="<%=ORSView.CHANGE_PASSWORD_CTL%>"><b>Change Password</b></a> 
+    <b>|</b>
+    <a href="<%=ORSView.LOGIN_CTL%>?operation=<%=LoginCtl.OP_LOG_OUT%>"><b>Logout</b></a>
 
    <% 
     } else { 

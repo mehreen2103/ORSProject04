@@ -47,14 +47,12 @@
 				</H3>
 			</div>
 
-			<input type="hidden" name="id" value="<%=bean.getId()%>"> <input
-				type="hidden" name="createdBy" value="<%=bean.getCreatedBy()%>">
-			<input type="hidden" name="modifiedBy"
-				value="<%=bean.getModifiedBy()%>"> <input type="hidden"
-				name="createdDatetime"
+			<input type="hidden" name="id" value="<%=bean.getId()%>"> <input type="hidden" name="createdBy" value="<%=bean.getCreatedBy()%>">
+			
+			<input type="hidden" name="modifiedBy" value="<%=bean.getModifiedBy()%>"> <input type="hidden" name="createdDatetime"
 				value="<%=DataUtility.getTimestamp(bean.getCreatedDatetime())%>">
-			<input type="hidden" name="modifiedDatetime"
-				value="<%=DataUtility.getTimestamp(bean.getModifiedDatetime())%>">
+				
+			<input type="hidden" name="modifiedDatetime" value="<%=DataUtility.getTimestamp(bean.getModifiedDatetime())%>">
 
 			<table>
 				<tr>
@@ -135,8 +133,9 @@
 						if (bean != null && bean.getId() > 0) {
 					%>
 					<td align="left" colspan="2"><input type="submit"
-						name="operation" value="<%=UserCtl.OP_UPDATE%>"> <input
-						type="submit" name="operation" value="<%=UserCtl.OP_CANCEL%>">
+						name="operation" value="<%=UserCtl.OP_UPDATE%>">
+						
+						 <input type="submit" name="operation" value="<%=UserCtl.OP_CANCEL%>">
 						<%
 							} else {
 						%>
@@ -150,5 +149,6 @@
 			</table>
 		</div>
 	</form>
+	<%@ include file="Footer.jsp"%>
 </body>
 </html>

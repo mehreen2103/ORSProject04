@@ -178,7 +178,7 @@ public class UserCtl extends BaseCtl {
 
     /**
      * Handles POST request for Save, Update, Cancel and Reset operations.
-     */
+     */	
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -202,20 +202,23 @@ public class UserCtl extends BaseCtl {
                 return;
             }
         } else if (OP_UPDATE.equalsIgnoreCase(op)) {
+        	
             UserBean bean = (UserBean) populateBean(request);
+            
             try {
                 if (id > 0) {
                     model.update(bean);
                 }
                 ServletUtility.setBean(bean, request);
                 ServletUtility.setSuccessMessage("User updated successfully", request);
-            } catch (DuplicateRecordException e) {
+            } catch (DuplicateRecordException e ) {
                 ServletUtility.setBean(bean, request);
                 ServletUtility.setErrorMessage("Login Id already exists", request);
             } catch (ApplicationException e) {
                 e.printStackTrace();
                 return;
             }
+            
         } else if (OP_CANCEL.equalsIgnoreCase(op)) {
             ServletUtility.redirect(ORSView.USER_LIST_CTL, request, response);
             return;
