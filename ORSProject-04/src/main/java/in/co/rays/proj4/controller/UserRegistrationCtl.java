@@ -7,6 +7,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import in.co.rays.proj4.bean.BaseBean;
 import in.co.rays.proj4.bean.RoleBean;
 import in.co.rays.proj4.bean.UserBean;
@@ -30,9 +32,14 @@ import in.co.rays.proj4.util.ServletUtility;
 @WebServlet(name = "UserRegistrationCtl", urlPatterns = { "/UserRegistrationCtl" })
 public class UserRegistrationCtl extends BaseCtl {
 
+	private static final long serialVersionUID = 1L;
+	
     /** Operation constant for Sign Up. */
     public static final String OP_SIGN_UP = "Sign Up";
+    
+    private static Logger log = Logger.getLogger(UserRegistrationCtl.class);
 
+    
     /**
      * Validates the user registration form input fields.
      * 
@@ -41,6 +48,8 @@ public class UserRegistrationCtl extends BaseCtl {
      */
     @Override
     protected boolean validate(HttpServletRequest request) {
+    	
+    	log.debug("UserRegistrationCtl Method validate Started");
 
         boolean pass = true;
 
@@ -113,6 +122,8 @@ public class UserRegistrationCtl extends BaseCtl {
             request.setAttribute("mobileNo", "Invalid Mobile No");
             pass = false;
         }
+        
+        log.debug("UserRegistrationCtl Method validate Ended");
 
         return pass;
     }
@@ -125,6 +136,8 @@ public class UserRegistrationCtl extends BaseCtl {
      */
     @Override
     protected BaseBean populateBean(HttpServletRequest request) {
+    	
+    	log.debug("UserRegistrationCtl Method populateBean Started");
 
         UserBean bean = new UserBean();
 
@@ -139,8 +152,13 @@ public class UserRegistrationCtl extends BaseCtl {
         bean.setRoleId(RoleBean.STUDENT);
 
         populateDTO(bean, request);
+        
+        log.debug("UserRegistrationCtl Method populateBean Ended");
+
 
         return bean;
+
+        
     }
 
     /**
@@ -151,6 +169,9 @@ public class UserRegistrationCtl extends BaseCtl {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	
+    	System.out.println("userregistration ctl doget started");
+		log.debug("UserRegistrationCtl Method doGet Started");
         ServletUtility.forward(getView(), request, response);
     }
 
@@ -163,6 +184,9 @@ public class UserRegistrationCtl extends BaseCtl {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+    	System.out.println("in get method");
+		log.debug("UserRegistrationCtl Method doPost Started");
+    	
         String op = DataUtility.getString(request.getParameter("operation"));
 
         UserModel model = new UserModel();
@@ -186,6 +210,7 @@ public class UserRegistrationCtl extends BaseCtl {
             ServletUtility.redirect(ORSView.USER_REGISTRATION_CTL, request, response);
             return;
         }
+        log.debug("UserRegistrationCtl Method doPost Ended");
     }
 
     /**

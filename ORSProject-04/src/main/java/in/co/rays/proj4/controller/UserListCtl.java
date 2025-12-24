@@ -9,6 +9,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import in.co.rays.proj4.bean.BaseBean;
 import in.co.rays.proj4.bean.UserBean;
 import in.co.rays.proj4.exception.ApplicationException;
@@ -36,6 +38,8 @@ import in.co.rays.proj4.util.ServletUtility;
 @WebServlet(name = "UserListCtl", urlPatterns = { "/ctl/UserListCtl" })
 public class UserListCtl extends BaseCtl {
 
+	private static final long serialVersionUID = 1L;
+	private static Logger log = Logger.getLogger(UserListCtl.class);
 	/**
 	 * Preloads role list and sets it as request attribute "roleList" for the user
 	 * list view so role filters/dropdowns can be populated.
@@ -63,6 +67,8 @@ public class UserListCtl extends BaseCtl {
 	@Override
 	protected BaseBean populateBean(HttpServletRequest request) {
 
+		log.debug("UserListCtl populateBean Started");
+		
 		UserBean bean = new UserBean();
 
 		bean.setFirstName(DataUtility.getString(request.getParameter("firstName")));
@@ -70,6 +76,7 @@ public class UserListCtl extends BaseCtl {
 		bean.setRoleId(DataUtility.getLong(request.getParameter("roleId")));
 //        bean.setDob(DataUtility.getDate(request.getParameter("dob")));
 		
+		log.debug("UserListCtl populateBean Ended");
 		return bean;
 	}
 
@@ -85,6 +92,8 @@ public class UserListCtl extends BaseCtl {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
+		log.debug("UserListCtl doGet Started");
 
 		int pageNo = 1;
 		int pageSize = 10;
@@ -113,6 +122,7 @@ public class UserListCtl extends BaseCtl {
 			ServletUtility.handleException(e, request, response);
 			return;
 		}
+		log.debug("UserListCtl doGet Ended");
 	}
 
 	/**
@@ -128,6 +138,8 @@ public class UserListCtl extends BaseCtl {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
+		log.debug("UserListCtl doPost Started");
 
 		List list = null;
 		List next = null;
@@ -206,6 +218,7 @@ public class UserListCtl extends BaseCtl {
 			ServletUtility.handleException(e, request, response);
 			return;
 		}
+		log.debug("UserListCtl doPost Ended");
 	}
 
 	/**

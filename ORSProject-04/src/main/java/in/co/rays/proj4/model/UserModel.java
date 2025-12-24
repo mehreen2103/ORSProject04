@@ -1,13 +1,10 @@
-
 package in.co.rays.proj4.model;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import in.co.rays.proj4.bean.UserBean;
 import in.co.rays.proj4.exception.ApplicationException;
 import in.co.rays.proj4.exception.DatabaseException;
@@ -125,9 +122,9 @@ public class UserModel {
 
 		Connection conn = null;
 
-		UserBean Existbean = findByLogin(bean.getLogin());
+		UserBean existbean = findByLogin(bean.getLogin());
 
-		if (Existbean != null && Existbean.getId() != bean.getId()) {
+		if (existbean != null && existbean.getId() != bean.getId()) {
 			throw new DuplicateRecordException("Login Id is already exist");
 		}
 

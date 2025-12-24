@@ -8,6 +8,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import in.co.rays.proj4.bean.BaseBean;
 import in.co.rays.proj4.bean.MarksheetBean;
 import in.co.rays.proj4.exception.ApplicationException;
@@ -24,6 +26,10 @@ import in.co.rays.proj4.util.ServletUtility;
  */
 @WebServlet(name = "MarksheetListCtl", urlPatterns = { "/ctl/MarksheetListCtl" })
 public class MarksheetListCtl extends BaseCtl {
+	
+	private static final long serialVersionUID = 1L;
+
+	private static Logger log = Logger.getLogger(MarksheetListCtl.class);
 
     /**
      * Populates MarksheetBean using request parameters.
@@ -33,13 +39,17 @@ public class MarksheetListCtl extends BaseCtl {
      */
     @Override
     protected BaseBean populateBean(HttpServletRequest request) {
+    	
+    	log.debug("MarksheetListCtl populateBean Started");
 
         MarksheetBean bean = new MarksheetBean();
 
         bean.setRollNo(DataUtility.getString(request.getParameter("rollNo")));
         bean.setName(DataUtility.getString(request.getParameter("name")));
 
+        log.debug("MarksheetListCtl populateBean Ended");
         return bean;
+        
     }
 
     /**
@@ -51,6 +61,8 @@ public class MarksheetListCtl extends BaseCtl {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	
+    	log.debug("MarksheetListCtl doGet Started");
 
         int pageNo = 1;
         int pageSize = DataUtility.getInt(PropertyReader.getValue("page.size"));
@@ -78,6 +90,7 @@ public class MarksheetListCtl extends BaseCtl {
             e.printStackTrace();
             return;
         }
+        log.debug("MarksheetListCtl doGet Ended");
     }
 
     /**
@@ -89,6 +102,8 @@ public class MarksheetListCtl extends BaseCtl {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	
+    	log.debug("MarksheetListCtl doPost Started");
 
         List list = null;
         List next = null;
@@ -161,6 +176,7 @@ public class MarksheetListCtl extends BaseCtl {
             e.printStackTrace();
             return;
         }
+        log.debug("MarksheetListCtl doPost Ended");
     }
 
     /**

@@ -1,12 +1,11 @@
 package in.co.rays.proj4.controller;
-
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import org.apache.log4j.Logger;
 import in.co.rays.proj4.bean.BaseBean;
 import in.co.rays.proj4.bean.RoleBean;
 import in.co.rays.proj4.bean.UserBean;
@@ -29,6 +28,10 @@ import in.co.rays.proj4.util.ServletUtility;
 @WebServlet(name = "UserCtl", urlPatterns = { "/ctl/UserCtl" })
 public class UserCtl extends BaseCtl {
 
+	private static final long serialVersionUID = 1L;
+	
+	private static Logger log =  Logger.getLogger(UserCtl.class);
+	
     /**
      * Preloads role list for dropdown.
      */
@@ -49,6 +52,8 @@ public class UserCtl extends BaseCtl {
      */
     @Override
     protected boolean validate(HttpServletRequest request) {
+    	
+    	log.debug("UserCtl Method validate Started");
 
         boolean pass = true;
 
@@ -126,6 +131,8 @@ public class UserCtl extends BaseCtl {
             request.setAttribute("confirmPassword", "Password and Confirm Password must be Same!");
             pass = false;
         }
+        
+        log.debug("UserCtl Method validate Ended");
 
         return pass;
     }
@@ -136,6 +143,8 @@ public class UserCtl extends BaseCtl {
     @Override
     protected BaseBean populateBean(HttpServletRequest request) {
 
+    	log.debug("UserCtl Method populatebean Started");
+    	
         UserBean bean = new UserBean();
 
         bean.setId(DataUtility.getLong(request.getParameter("id")));
@@ -151,6 +160,8 @@ public class UserCtl extends BaseCtl {
 
         populateDTO(bean, request);
 
+        log.debug("UserCtl Method populatebean Ended");
+        
         return bean;
     }
 
@@ -160,10 +171,12 @@ public class UserCtl extends BaseCtl {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+    	log.debug("UserCtl Method doGet Started");
+    	
         long id = DataUtility.getLong(request.getParameter("id"));
 
         UserModel model = new UserModel();
-
+ 
         if (id > 0) {
             try {
                 UserBean bean = model.findByPk(id);
@@ -174,6 +187,7 @@ public class UserCtl extends BaseCtl {
             }
         }
         ServletUtility.forward(getView(), request, response);
+        log.debug("UserCtl Method doGet Ended");
     }
 
     /**
@@ -182,6 +196,8 @@ public class UserCtl extends BaseCtl {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+    	log.debug("UserCtl Method doPost Started");
+    	
         String op = DataUtility.getString(request.getParameter("operation"));
 
         UserModel model = new UserModel();
@@ -227,8 +243,11 @@ public class UserCtl extends BaseCtl {
             return;
         }
         ServletUtility.forward(getView(), request, response);
-    }
+        
+    	log.debug("UserCtl Method doPost Ended");
 
+    }
+    
     /**
      * Returns User View Page constant.
      */
