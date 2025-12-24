@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import in.co.rays.proj4.bean.BaseBean;
+import in.co.rays.proj4.bean.EmployeeBean;
 import in.co.rays.proj4.controller.BaseCtl;
 import in.co.rays.proj4.controller.ORSView;
 
@@ -226,4 +227,6 @@ public class ServletUtility {
         request.setAttribute("exception", e);
         response.sendRedirect(ORSView.ERROR_CTL);
     }
+
+	
 }
