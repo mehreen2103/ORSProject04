@@ -90,6 +90,12 @@ public interface ORSView {
 	public String EMPLOYEE_LIST_VIEW = PAGE_FOLDER + "/EmployeeListView.jsp";
 	public String EMPLOYEE_LIST_CTL = APP_CONTEXT + "/ctl/EmployeeListCtl";
 	
+	public String DEPARTMENT_LIST_VIEW = PAGE_FOLDER + "/DepartmentListView.jsp";
+	public String DEPARTMENT_LIST_CTL = APP_CONTEXT + "/ctl/DepartmentListCtl";
+	
+	public String DEPARTMENT_VIEW = PAGE_FOLDER + "/DepartmentView.jsp";
+	public String DEPARTMENT_CTL = APP_CONTEXT + "/ctl/DepartmentCtl";
+	
 	public String ERROR_VIEW = PAGE_FOLDER + "/ErrorView.jsp";
 	public String ERROR_CTL = APP_CONTEXT + "/ErrorCtl";
 	

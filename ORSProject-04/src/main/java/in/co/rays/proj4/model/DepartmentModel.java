@@ -1,0 +1,276 @@
+package in.co.rays.proj4.model;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
+import in.co.rays.proj4.bean.DepartmentBean;
+import in.co.rays.proj4.exception.ApplicationException;
+import in.co.rays.proj4.exception.DatabaseException;
+import in.co.rays.proj4.util.JDBCDataSource;
+
+public class DepartmentModel {
+
+	// ------------------- Next PK ---------------------//
+	public Integer nextPk() throws DatabaseException {
+
+		Connection conn = null;
+		int pk = 0;
+
+		try {
+			conn = JDBCDataSource.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("select max(id) from st_department");
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				pk = rs.getInt(1);
+			}
+			rs.close();
+			pstmt.close();
+		} catch (Exception e) {
+			throw new DatabaseException("Exception : Exception in getting PK");
+		} finally {
+			JDBCDataSource.closeConnection(conn);
+		}
+		return pk + 1;
+	}
+
+	// ------------------- Add Method (Duplicate Check) ---------------------//
+	public long add(DepartmentBean bean) throws ApplicationException {
+
+		Connection conn = null;
+		int pk = 0;
+
+		// 🔴 Duplicate Record Check
+		DepartmentBean duplicate = findByName(bean.getName());
+		if (duplicate != null) {
+			throw new ApplicationException("Department already exists");
+		}
+
+		try {
+			pk = nextPk();
+			conn = JDBCDataSource.getConnection();
+			conn.setAutoCommit(false);
+
+			PreparedStatement pstmt = conn
+					.prepareStatement("insert into st_department values(?,?,?,?,?,?,?)");
+			pstmt.setInt(1, pk);
+			pstmt.setString(2, bean.getName());
+			pstmt.setString(3, bean.getDescription());
+			pstmt.setString(4, bean.getCreatedBy());
+			pstmt.setString(5, bean.getModifiedBy());
+			pstmt.setTimestamp(6, bean.getCreatedDatetime());
+			pstmt.setTimestamp(7, bean.getModifiedDatetime());
+
+			pstmt.executeUpdate();
+			conn.commit();
+			pstmt.close();
+
+		} catch (Exception e) {
+			try {
+				conn.rollback();
+			} catch (Exception ex) {
+				throw new ApplicationException("Add rollback exception " + ex.getMessage());
+			}
+			throw new ApplicationException("Exception in add Department");
+		} finally {
+			JDBCDataSource.closeConnection(conn);
+		}
+		return pk;
+	}
+
+	// ------------------- Update Method ---------------------//
+	public void update(DepartmentBean bean) throws ApplicationException {
+
+		Connection conn = null;
+
+		try {
+			conn = JDBCDataSource.getConnection();
+			conn.setAutoCommit(false);
+
+			PreparedStatement pstmt = conn.prepareStatement(
+					"update st_department set name=?, description=?, created_by=?, modified_by=?, created_datetime=?, modified_datetime=? where id=?");
+
+			pstmt.setString(1, bean.getName());
+			pstmt.setString(2, bean.getDescription());
+			pstmt.setString(3, bean.getCreatedBy());
+			pstmt.setString(4, bean.getModifiedBy());
+			pstmt.setTimestamp(5, bean.getCreatedDatetime());
+			pstmt.setTimestamp(6, bean.getModifiedDatetime());
+			pstmt.setLong(7, bean.getId());
+
+			pstmt.executeUpdate();
+			conn.commit();
+			pstmt.close();
+
+		} catch (Exception e) {
+			try {
+				conn.rollback();
+			} catch (Exception ex) {
+				throw new ApplicationException("Update rollback exception " + ex.getMessage());
+			}
+			throw new ApplicationException("Exception in update Department");
+		} finally {
+			JDBCDataSource.closeConnection(conn);
+		}
+	}
+
+	// ------------------- Delete Method ---------------------//
+	public void delete(DepartmentBean bean) throws ApplicationException {
+
+		Connection conn = null;
+
+		try {
+			conn = JDBCDataSource.getConnection();
+			conn.setAutoCommit(false);
+
+			PreparedStatement pstmt = conn
+					.prepareStatement("delete from st_department where id=?");
+			pstmt.setLong(1, bean.getId());
+
+			pstmt.executeUpdate();
+			conn.commit();
+			pstmt.close();
+
+		} catch (Exception e) {
+			try {
+				conn.rollback();
+			} catch (Exception ex) {
+				throw new ApplicationException("Delete rollback exception " + ex.getMessage());
+			}
+			throw new ApplicationException("Exception in delete Department");
+		} finally {
+			JDBCDataSource.closeConnection(conn);
+		}
+	}
+
+	// ------------------- Find By PK ---------------------//
+	public DepartmentBean findByPk(long pk) throws ApplicationException {
+
+		DepartmentBean bean = null;
+		Connection conn = null;
+
+		try {
+			conn = JDBCDataSource.getConnection();
+			PreparedStatement pstmt = conn
+					.prepareStatement("select * from st_department where id=?");
+			pstmt.setLong(1, pk);
+
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				bean = new DepartmentBean();
+				bean.setId(rs.getLong(1));
+				bean.setName(rs.getString(2));
+				bean.setDescription(rs.getString(3));
+				bean.setCreatedBy(rs.getString(4));
+				bean.setModifiedBy(rs.getString(5));
+				bean.setCreatedDatetime(rs.getTimestamp(6));
+				bean.setModifiedDatetime(rs.getTimestamp(7));
+			}
+			rs.close();
+			pstmt.close();
+
+		} catch (Exception e) {
+			throw new ApplicationException("Exception in findByPk Department");
+		} finally {
+			JDBCDataSource.closeConnection(conn);
+		}
+		return bean;
+	}
+
+	// ------------------- Find By Name (Duplicate Check) ---------------------//
+	public DepartmentBean findByName(String name) throws ApplicationException {
+
+		DepartmentBean bean = null;
+		Connection conn = null;
+
+		try {
+			conn = JDBCDataSource.getConnection();
+			PreparedStatement pstmt = conn
+					.prepareStatement("select * from st_department where name=?");
+			pstmt.setString(1, name);
+
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				bean = new DepartmentBean();
+				bean.setId(rs.getLong(1));
+				bean.setName(rs.getString(2));
+				bean.setDescription(rs.getString(3));
+				bean.setCreatedBy(rs.getString(4));
+				bean.setModifiedBy(rs.getString(5));
+				bean.setCreatedDatetime(rs.getTimestamp(6));
+				bean.setModifiedDatetime(rs.getTimestamp(7));
+			}
+			rs.close();
+			pstmt.close();
+
+		} catch (Exception e) {
+			throw new ApplicationException("Exception in findByName Department");
+		} finally {
+			JDBCDataSource.closeConnection(conn);
+		}
+		return bean;
+	}
+
+	// ------------------- List ---------------------//
+	public List<DepartmentBean> list() throws ApplicationException {
+		return search(null, 0, 0);
+	}
+
+	// ------------------- Search ---------------------//
+	public List<DepartmentBean> search(DepartmentBean bean, int pageNo, int pageSize)
+			throws ApplicationException {
+
+		StringBuffer sql = new StringBuffer("select * from st_department where 1=1");
+
+		if (bean != null) {
+
+			if (bean.getId() > 0) {
+				sql.append(" and id=" + bean.getId());
+			}
+
+			if (bean.getName() != null && bean.getName().length() > 0) {
+				sql.append(" and name like '" + bean.getName() + "%'");
+			}
+
+			if (bean.getDescription() != null && bean.getDescription().length() > 0) {
+				sql.append(" and description like '" + bean.getDescription() + "%'");
+			}
+		}
+
+		if (pageSize > 0) {
+			pageNo = (pageNo - 1) * pageSize;
+			sql.append(" limit " + pageNo + "," + pageSize);
+		}
+
+		Connection conn = null;
+		ArrayList<DepartmentBean> list = new ArrayList<>();
+
+		try {
+			conn = JDBCDataSource.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql.toString());
+			ResultSet rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				DepartmentBean db = new DepartmentBean();
+				db.setId(rs.getLong(1));
+				db.setName(rs.getString(2));
+				db.setDescription(rs.getString(3));
+				db.setCreatedBy(rs.getString(4));
+				db.setModifiedBy(rs.getString(5));
+				db.setCreatedDatetime(rs.getTimestamp(6));
+				db.setModifiedDatetime(rs.getTimestamp(7));
+				list.add(db);
+			}
+			rs.close();
+			pstmt.close();
+
+		} catch (Exception e) {
+			throw new ApplicationException("Exception in search Department");
+		} finally {
+			JDBCDataSource.closeConnection(conn);
+		}
+		return list;
+	}
+}

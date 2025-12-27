@@ -93,6 +93,10 @@
     <b>|</b>
     <a href="<%=ORSView.EMPLOYEE_LIST_CTL%>"><b>Employee List</b></a> 
     <b>|</b>
+     <a href="<%=ORSView.DEPARTMENT_CTL%>"><b>Add Department</b></a> 
+    <b>|</b>
+    <a href="<%=ORSView.DEPARTMENT_LIST_CTL%>"><b>Department List</b></a> 
+    <b>|</b>
     <a href=<%=ORSView.JAVA_DOC%> target="blank"><b>Java Doc</b></a>
 	<b>|</b>
 	 <a href="<%=ORSView.CHANGE_PASSWORD_CTL%>"><b>Change Password</b></a> 

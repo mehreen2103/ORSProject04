@@ -1,144 +1,205 @@
 package in.co.rays.proj4.test;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
 import in.co.rays.proj4.bean.EmployeeBean;
 import in.co.rays.proj4.exception.ApplicationException;
 import in.co.rays.proj4.exception.DatabaseException;
+import in.co.rays.proj4.exception.DuplicateRecordException;
 import in.co.rays.proj4.model.EmployeeModel;
 
 public class TestEmployeeModel {
 
-    public static void main(String[] args) throws DatabaseException, ParseException {
+	public static void main(String[] args) throws DatabaseException, ParseException {
 
-        // testAdd();
-         //testDelete();
-         //testUpdate();
-        // testFindByPk();
-         testSearch();
-    }
+		// testAdd();
+		testDelete();
+		// testUpdate();
+		// testFindByPk();
+		// testFindByEmail();
+		// testSearch();
+		// testList();
+	}
 
-    /* ===================== ADD ===================== */
-    public static void testAdd() {
+	/* ================= ADD ================= */
+	public static void testAdd() {
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-        EmployeeBean bean = new EmployeeBean();
+		EmployeeBean bean = new EmployeeBean();
 
-        bean.setName("Inaya");
-        bean.setEmail("inaya@gmail.com");
-        bean.setPhone("9876543210");
-        bean.setSalary("45000");
-        bean.setDepartment("HR");
+		bean.setName("Mehreen");
+		bean.setEmail("mehreen@gmail.com");
+		bean.setPhone("9876543210");
+		bean.setSalary("45000");
+		bean.setGender("Female");
+		bean.setDepartment("HR");
 
-        try {
-            bean.setJoinDate(sdf.parse("2023-01-10"));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+		try {
+			bean.setJoinDate(sdf.parse("2024-01-10"));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 
-        EmployeeModel model = new EmployeeModel();
-        try {
-            model.add(bean);
-            System.out.println("Employee Added Successfully");
-        } catch (ApplicationException e) {
-            e.printStackTrace();
-        }
-    }
+		bean.setCreatedBy("admin");
+		bean.setModifiedBy("admin");
+		bean.setCreatedDatetime(new Timestamp(new Date().getTime()));
+		bean.setModifiedDatetime(new Timestamp(new Date().getTime()));
 
-    /* ===================== DELETE ===================== */
-    public static void testDelete() {
+		EmployeeModel model = new EmployeeModel();
 
-        EmployeeBean bean = new EmployeeBean();
-        bean.setId(21);
+		try {
+			model.add(bean);
+			System.out.println("Employee added successfully");
+		} catch (ApplicationException | DuplicateRecordException e) {
+			e.printStackTrace();
+		}
+	}
 
-        EmployeeModel model = new EmployeeModel();
-        try {
-            model.delete(bean);
-            System.out.println("Employee Deleted Successfully");
-        } catch (ApplicationException e) {
-            e.printStackTrace();
-        }
-    }
+	/* ================= DELETE ================= */
+	public static void testDelete() {
 
-    /* ===================== UPDATE ===================== */
-    public static void testUpdate() {
+		EmployeeBean bean = new EmployeeBean();
+		bean.setId(16);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		EmployeeModel model = new EmployeeModel();
 
-        EmployeeBean bean = new EmployeeBean();
-        bean.setId(1);
-        bean.setName("Mehreen");
-        bean.setEmail("mehreen@gmail.com");
-        bean.setPhone("9999999999");
-        bean.setSalary("60000");
-        bean.setDepartment("IT");
+		try {
+			model.delete(bean);
+			System.out.println("Employee deleted successfully");
+		} catch (ApplicationException e) {
+			e.printStackTrace();
+		}
+	}
 
-        try {
-            bean.setJoinDate(sdf.parse("2022-11-03"));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+	/* ================= UPDATE ================= */
+	public static void testUpdate() {
 
-        EmployeeModel model = new EmployeeModel();
-        try {
-            model.update(bean);
-            System.out.println("Employee Updated Successfully");
-        } catch (ApplicationException e ) {
-            e.printStackTrace();
-        }
-    }
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-    /* ===================== FIND BY PK ===================== */
-    public static void testFindByPk() {
+		EmployeeBean bean = new EmployeeBean();
+		bean.setId(2);
+		bean.setName("Inaya");
+		bean.setEmail("inaya@gmail.com");
+		bean.setPhone("9999999999");
+		bean.setSalary("60000");
+		bean.setGender("Female");
+		bean.setDepartment("IT");
 
-        EmployeeModel model = new EmployeeModel();
-        try {
-            EmployeeBean bean = model.findByPk(1);
+		try {
+			bean.setJoinDate(sdf.parse("2023-06-15"));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 
-            if (bean == null) {
-                System.out.println("Test Find By PK Failed");
-            } else {
-                System.out.println(bean.getName());
-            }
+		bean.setCreatedBy("admin");
+		bean.setModifiedBy("admin");
+		bean.setCreatedDatetime(new Timestamp(new Date().getTime()));
+		bean.setModifiedDatetime(new Timestamp(new Date().getTime()));
 
-        } catch (ApplicationException e) {
-            e.printStackTrace();
-        }
-    }
+		EmployeeModel model = new EmployeeModel();
 
-   
-    /* ===================== SEARCH ===================== */
-    public static void testSearch() {
+		try {
+			model.update(bean);
+			System.out.println("Employee updated successfully");
+		} catch (ApplicationException | DuplicateRecordException e) {
+			e.printStackTrace();
+		}
+	}
 
-        try {
-            EmployeeModel model = new EmployeeModel();
-            EmployeeBean bean = new EmployeeBean();
+	/* ================= FIND BY PK ================= */
+	public static void testFindByPk() {
 
-            List list = new ArrayList();
-            bean.setDepartment("IT");
+		EmployeeModel model = new EmployeeModel();
 
-            list = model.search(bean, 0, 0);
+		try {
+			EmployeeBean bean = model.findByPk(2);
 
-            if (list.size() < 0) {
-                System.out.println("Test Search Failed");
-            }
+			if (bean == null) {
+				System.out.println("Test find by PK fail");
+			} else {
+				System.out.println(bean.getName());
+				System.out.println(bean.getEmail());
+			}
 
-            Iterator it = list.iterator();
-            while (it.hasNext()) {
-                bean = (EmployeeBean) it.next();
-                System.out.println(bean.getId());
-                System.out.println(bean.getName());
-                System.out.println(bean.getEmail());
-                System.out.println(bean.getDepartment());
-            }
+		} catch (ApplicationException e) {
+			e.printStackTrace();
+		}
+	}
 
-        } catch (ApplicationException e) {
-            e.printStackTrace();
-        }
-    }
+	/* ================= FIND BY EMAIL ================= */
+	public static void testFindByEmail() {
+
+		EmployeeModel model = new EmployeeModel();
+
+		try {
+			EmployeeBean bean = model.findByEmail("mehreen@gmail.com");
+
+			if (bean == null) {
+				System.out.println("Test find by email fail");
+			} else {
+				System.out.println(bean.getId());
+				System.out.println(bean.getName());
+			}
+
+		} catch (ApplicationException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/* ================= SEARCH ================= */
+	public static void testSearch() {
+
+		try {
+			EmployeeModel model = new EmployeeModel();
+			EmployeeBean bean = new EmployeeBean();
+			List list = new ArrayList();
+
+			bean.setDepartment("IT");
+
+			list = model.search(bean, 0, 0);
+
+			if (list.size() < 0) {
+				System.out.println("Test search fail");
+			}
+
+			Iterator it = list.iterator();
+			while (it.hasNext()) {
+				bean = (EmployeeBean) it.next();
+				System.out.println(bean.getId());
+				System.out.println(bean.getName());
+				System.out.println(bean.getEmail());
+				System.out.println(bean.getDepartment());
+			}
+
+		} catch (ApplicationException e) {
+			e.printStackTrace();
+		}
+	}
+
+//	/* ================= LIST ================= */
+//	public static void testList() {
+//
+//		try {
+//			EmployeeModel model = new EmployeeModel();
+//			List list = model.list();
+//
+//			Iterator it = list.iterator();
+//			while (it.hasNext()) {
+//				EmployeeBean bean = (EmployeeBean) it.next();
+//				System.out.println(bean.getId());
+//				System.out.println(bean.getName());
+//				System.out.println(bean.getEmail());
+//			}
+//
+//		} catch (ApplicationException e) {
+//			e.printStackTrace();
+//		}
+//	}
 }
